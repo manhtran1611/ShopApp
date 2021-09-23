@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import ProductDataService from "../../services/products";
+import { RouteComponentProps } from "react-router";
 
 // * MATERIAL UI
 import Avatar from "@material-ui/core/Avatar";
@@ -34,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const Signup = (props: any) => {
+export const Signup = (props: RouteComponentProps) => {
   type FormValues = {
     name: string;
     password: string;

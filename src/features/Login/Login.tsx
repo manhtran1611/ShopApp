@@ -47,6 +47,8 @@ export const Login = (props: any) => {
   const [submitted, setSubmitted] = useState(false);
   // const [wrongPassword, setError] = useState(false);
   const { register, handleSubmit } = useForm<FormValues>();
+
+  // ! Need to fix, need to show validation
   const onSubmit: SubmitHandler<FormValues> = (data) => {
     ProductDataService.loginUser(data)
       .then((response) => {

@@ -7,6 +7,9 @@ class ProductDataService {
   getProductById(id: string) {
     return http.get(`/products/${id}`);
   }
+  addProduct(data: Object) {
+    return http.post(`/products`, data);
+  }
   updateProduct(id: string, data: Object) {
     return http.put(`/products/${id}`, data);
   }

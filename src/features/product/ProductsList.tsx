@@ -1,14 +1,18 @@
-import React, { useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
+import React from "react";
+import { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { Product } from "../../app/interface";
 
+//  * Redux
+import { fetchProducts, selectAllProducts } from "./productsSlice";
+
+//  * MATERIAL UI
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
-import ProductDataService from "../../services/products";
 import { Button, CardActionArea, CardMedia } from "@material-ui/core";
-
+import { makeStyles } from "@material-ui/core/styles";
+import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
-import { useEffect } from "react";
 
 const useStyles = makeStyles({
   container: {
@@ -22,30 +26,30 @@ const useStyles = makeStyles({
   media: {
     height: 140,
   },
+  title: {
+    fontWeight: "bold",
+  },
 });
 
 export const ProductsList = () => {
   const classes = useStyles();
+  const dispatch = useAppDispatch();
+  const products = useAppSelector(selectAllProducts);
+  console.log(products);
+  const productStatus = useAppSelector((state) => state.productsReducer.status);
+  console.log(productStatus);
 
-  const [products, setProducts] = useState([]);
-  const retrieveProducts = () => {
-    ProductDataService.getAllProduct()
-      .then((response) => {
-        setProducts(response.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
   useEffect(() => {
-    retrieveProducts();
-  }, []);
+    if (productStatus === "idle") {
+      dispatch(fetchProducts());
+    }
+  }, [productStatus, dispatch]);
 
   return (
     <section>
       <h2>Product Lists</h2>
       <div className={classes.container}>
-        {products.map((product: any) => {
+        {products.map((product: Product) => {
           return (
             <Card className={classes.root}>
               <CardActionArea>
@@ -55,6 +59,9 @@ export const ProductsList = () => {
                   title={product.name}
                 />
                 <CardContent>
+                  <Typography className={classes.title}>
+                    <div>{product.name}</div>
+                  </Typography>
                   <Typography
                     variant="body2"
                     color="textSecondary"
