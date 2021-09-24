@@ -26,7 +26,7 @@ export const fetchProducts = createAsyncThunk(
   async () => {
     const response = await ProductDataService.getAllProduct();
     console.log(response.data);
-    return response.data;
+    return response.data.product;
   }
 );
 

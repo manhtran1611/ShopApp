@@ -13,3 +13,16 @@ export interface Product {
   owner: Owner;
   date: Date;
 }
+
+export interface Review {
+  author: {
+    id: string;
+    username: string;
+  };
+  text: string;
+  date: Date;
+}
+export interface User {
+  name: string;
+  password: string;
+}

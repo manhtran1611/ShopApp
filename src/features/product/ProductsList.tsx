@@ -16,11 +16,13 @@ import CardActions from "@material-ui/core/CardActions";
 
 const useStyles = makeStyles({
   container: {
-    display: "flex",
-    flexDirection: "row",
+    display: "grid",
+    maxWidth: "100vw",
+    width: "100vw",
+    height: "100vh",
   },
   root: {
-    maxWidth: 345,
+    maxWidth: "9em",
     margin: "1em",
   },
   media: {
@@ -43,6 +45,7 @@ export const ProductsList = () => {
     if (productStatus === "idle") {
       dispatch(fetchProducts());
     }
+    return () => {};
   }, [productStatus, dispatch]);
 
   return (
@@ -51,36 +54,38 @@ export const ProductsList = () => {
       <div className={classes.container}>
         {products.map((product: Product) => {
           return (
-            <Card className={classes.root}>
-              <CardActionArea>
-                <CardMedia
-                  className={classes.media}
-                  image={product.image}
-                  title={product.name}
-                />
-                <CardContent>
-                  <Typography className={classes.title}>
-                    <div>{product.name}</div>
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color="textSecondary"
-                    component="p"
-                  >
-                    <div>Price: {product.price}$</div>
-                    <div>Quantity: {product.quantity}</div>
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-              <CardActions>
-                <Button size="small" color="primary">
-                  Add to Cart
-                </Button>
-                <Button size="small" color="primary">
-                  Learn more
-                </Button>
-              </CardActions>
-            </Card>
+            <div>
+              <Card className={classes.root}>
+                <CardActionArea>
+                  <CardMedia
+                    className={classes.media}
+                    image={product.image}
+                    title={product.name}
+                  />
+                  <CardContent>
+                    <Typography className={classes.title}>
+                      <div>{product.name}</div>
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      color="textSecondary"
+                      component="p"
+                    >
+                      <div>Price: {product.price}$</div>
+                      <div>Quantity: {product.quantity}</div>
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+                <CardActions>
+                  <Button size="small" color="primary">
+                    Add to Cart
+                  </Button>
+                  <Button size="small" color="primary">
+                    Learn more
+                  </Button>
+                </CardActions>
+              </Card>
+            </div>
           );
         })}
       </div>
