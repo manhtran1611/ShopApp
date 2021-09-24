@@ -13,6 +13,7 @@ import { Button, CardActionArea, CardMedia } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
   container: {
@@ -80,9 +81,11 @@ export const ProductsList = () => {
                   <Button size="small" color="primary">
                     Add to Cart
                   </Button>
-                  <Button size="small" color="primary">
-                    Learn more
-                  </Button>
+                  <Link to={`/products/${product._id}`}>
+                    <Button size="small" color="primary">
+                      Learn more
+                    </Button>
+                  </Link>
                 </CardActions>
               </Card>
             </div>

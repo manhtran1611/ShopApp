@@ -22,11 +22,20 @@ const initialState = productsAdapter.getInitialState({
 } as ProductState);
 
 export const fetchProducts = createAsyncThunk(
-  "products/fetchProducts",
+  "products/getAllProducts",
   async () => {
     const response = await ProductDataService.getAllProduct();
     console.log(response.data);
     return response.data.product;
+  }
+);
+
+export const fetchProductById = createAsyncThunk(
+  "products/getProductById",
+  async (id: string) => {
+    const response = await ProductDataService.getProductById(id);
+    console.log(response.data);
+    return response.data;
   }
 );
 
@@ -65,6 +74,17 @@ const productsSlice = createSlice({
         productsAdapter.upsertMany(state, action.payload);
       })
       .addCase(fetchProducts.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      })
+      .addCase(fetchProductById.pending, (state, action) => {
+        state.status = "pending";
+      })
+      .addCase(fetchProductById.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        productsAdapter.upsertOne(state, action.payload);
+      })
+      .addCase(fetchProductById.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
       });

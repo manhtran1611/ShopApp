@@ -1,14 +1,16 @@
 import React from "react";
 import "./App.css";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { Route, Switch } from "react-router";
+// import { Router, Switch, Route } from "react-router-dom";
 import Navbar from "./app/Navbar";
 import { ProductsList } from "./features/product/ProductsList";
 import { Signup } from "./features/Signup/Signup";
 import { Login } from "./features/Login/Login";
+import { SingleProductPage } from "./features/product/SingleProductPage";
 
-function App() {
+const App: React.FC = (): JSX.Element => {
   return (
-    <Router>
+    <>
       <Navbar />
       <div>
         <Switch>
@@ -18,11 +20,12 @@ function App() {
             path="/signup"
             render={(props) => <Signup {...props} />}
           />
+          <Route exact path="/products/:id" component={SingleProductPage} />
           <Route exact path="/" component={ProductsList} />
         </Switch>
       </div>
-    </Router>
+    </>
   );
-}
+};
 
 export default App;
