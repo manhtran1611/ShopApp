@@ -1,12 +1,11 @@
 import React from "react";
 import "./App.css";
-import { Route, Switch } from "react-router";
-// import { Router, Switch, Route } from "react-router-dom";
-import Navbar from "./app/Navbar";
-import { ProductsList } from "./features/product/ProductsList";
-import { Signup } from "./features/Signup/Signup";
-import { Login } from "./features/Login/Login";
-import { SingleProductPage } from "./features/product/SingleProductPage";
+import { Switch, Route } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import { ProductsList } from "./components/ProductList";
+import { Signup } from "./components/User/Signup";
+import { Login } from "./components/User/Login";
+import { SingleProductPage } from "./components/ProductList/SingleProductPage";
 
 const App: React.FC = (): JSX.Element => {
   return (
@@ -14,13 +13,12 @@ const App: React.FC = (): JSX.Element => {
       <Navbar />
       <div>
         <Switch>
-          <Route exact path="/login" component={Login} />
+          <Route path="/login" component={Login} />
+          <Route path="/signup" render={(props) => <Signup {...props} />} />
           <Route
-            exact
-            path="/signup"
-            render={(props) => <Signup {...props} />}
+            path="/products/:id"
+            render={(props) => <SingleProductPage {...props} />}
           />
-          <Route exact path="/products/:id" component={SingleProductPage} />
           <Route exact path="/" component={ProductsList} />
         </Switch>
       </div>

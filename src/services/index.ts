@@ -1,11 +1,11 @@
-import http from "../http-common";
-import { Product, Review, User } from "../app/interface";
+import http from "../axios";
+import { Product, Review, User } from "../interface";
 class ProductDataService {
   getAllProduct(page: number = 0) {
     return http.get(`products?page=${page}`);
   }
   getProductById(id: string) {
-    return http.get(`/products/${id}`);
+    return http.get(`products/${id}`);
   }
   findProduct(query: string, by: string, page = 0) {
     return http.get(`/products?${by}=${query}&page=${page}`);

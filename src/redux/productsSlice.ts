@@ -3,9 +3,9 @@ import {
   createSlice,
   createAsyncThunk,
 } from "@reduxjs/toolkit";
-import ProductDataService from "../../services/products";
-import { Product } from "../../app/interface";
-import { RootState } from "../../app/rootReducer";
+import ProductDataService from "../services";
+import { Product } from "../interface";
+import { RootState } from "./rootReducer";
 
 interface ProductState {
   status: "idle" | "pending" | "succeeded" | "failed";
@@ -25,7 +25,6 @@ export const fetchProducts = createAsyncThunk(
   "products/getAllProducts",
   async () => {
     const response = await ProductDataService.getAllProduct();
-    console.log(response.data);
     return response.data.product;
   }
 );
@@ -34,7 +33,7 @@ export const fetchProductById = createAsyncThunk(
   "products/getProductById",
   async (id: string) => {
     const response = await ProductDataService.getProductById(id);
-    console.log(response.data);
+    // console.log(response.data);
     return response.data;
   }
 );

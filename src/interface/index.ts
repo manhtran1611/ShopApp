@@ -10,6 +10,7 @@ export interface Product {
   price: number;
   image: string;
   quantity: number;
+  reviews: Review[];
   owner: Owner;
   date: Date;
 }

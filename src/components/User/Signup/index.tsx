@@ -1,18 +1,17 @@
 import React from "react";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import ProductDataService from "../../services/products";
+import ProductDataService from "../../../services";
+import { RouteComponentProps } from "react-router";
 
-//  * MATERIAL UI
+// * MATERIAL UI
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import Link from "@material-ui/core/Link";
-import Grid from "@material-ui/core/Grid";
 import ShoppingBasketIcon from "@material-ui/icons/ShoppingBasket";
-import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 
@@ -28,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: "100%", // Fix IE 11 issue.
+    width: "100%",
     marginTop: theme.spacing(1),
   },
   submit: {
@@ -36,37 +35,32 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const Login = (props: any) => {
+export const Signup = (props: RouteComponentProps) => {
   type FormValues = {
     name: string;
     password: string;
   };
-
   const classes = useStyles();
 
   const [submitted, setSubmitted] = useState(false);
-  // const [wrongPassword, setError] = useState(false);
-  const { register, handleSubmit } = useForm<FormValues>();
 
-  // ! Need to fix, need to show validation
+  const { register, handleSubmit } = useForm<FormValues>();
   const onSubmit: SubmitHandler<FormValues> = (data) => {
-    ProductDataService.loginUser(data)
+    ProductDataService.addUser(data)
       .then((response) => {
         setSubmitted(true);
-        console.log(response);
+        console.log(response.data);
       })
-      .then(() => {
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => {
         setTimeout(() => {
           setSubmitted(false);
           props.history.push("/");
-        }, 1000);
-      })
-      .catch((error) => {
-        console.error(error);
-        // setError(true);
+        }, 1500);
       });
   };
-
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -85,7 +79,7 @@ export const Login = (props: any) => {
             <ShoppingBasketIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Sign up
           </Typography>
           <form
             className={classes.form}
@@ -97,6 +91,7 @@ export const Login = (props: any) => {
               margin="normal"
               required
               fullWidth
+              type="text"
               label="Username"
               autoFocus
               {...register("name")}
@@ -110,28 +105,16 @@ export const Login = (props: any) => {
               type="password"
               {...register("password")}
             />
-            {/* {wrongPassword && (
-              <div>
-                <Typography variant="body2">Wrong password</Typography>
-              </div>
-            )} */}
             <Button
               type="submit"
-              value="Login"
+              value="Sign up"
               fullWidth
               variant="contained"
               color="primary"
               className={classes.submit}
             >
-              Sign In
+              Sign Up
             </Button>
-            <Grid container>
-              <Grid item>
-                <Link href="/signup" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
           </form>
         </div>
       )}

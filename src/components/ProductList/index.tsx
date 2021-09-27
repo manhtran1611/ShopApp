@@ -1,10 +1,10 @@
 import React from "react";
 import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { Product } from "../../app/interface";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { Product } from "../../interface";
 
 //  * Redux
-import { fetchProducts, selectAllProducts } from "./productsSlice";
+import { fetchProducts, selectAllProducts } from "../../redux/productsSlice";
 
 //  * MATERIAL UI
 import CardContent from "@material-ui/core/CardContent";
@@ -38,9 +38,7 @@ export const ProductsList = () => {
   const classes = useStyles();
   const dispatch = useAppDispatch();
   const products = useAppSelector(selectAllProducts);
-  console.log(products);
   const productStatus = useAppSelector((state) => state.productsReducer.status);
-  console.log(productStatus);
 
   useEffect(() => {
     if (productStatus === "idle") {
