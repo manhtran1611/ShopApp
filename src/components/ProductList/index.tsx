@@ -44,7 +44,6 @@ export const ProductsList = () => {
     if (productStatus === "idle") {
       dispatch(fetchProducts());
     }
-    return () => {};
   }, [productStatus, dispatch]);
 
   return (

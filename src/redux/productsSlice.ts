@@ -59,6 +59,15 @@ export const updateProduct = createAsyncThunk(
   }
 );
 
+export const deleteProduct = createAsyncThunk(
+  "products/deleteProduct",
+  async (id: string) => {
+    const response = await ProductDataService.deleteProduct(id);
+    console.log(response);
+    return response.data;
+  }
+);
+
 const productsSlice = createSlice({
   name: "products",
   initialState: initialState,

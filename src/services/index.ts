@@ -19,6 +19,9 @@ class ProductDataService {
   deleteProduct(id: string) {
     return http.delete(`/products/${id}`);
   }
+  getReviews(productId: string) {
+    return http.get(`products/${productId}/reviews`);
+  }
   postReview(productId: string, review: Review) {
     return http.post(`/products/${productId}`, review);
   }

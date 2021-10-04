@@ -16,7 +16,8 @@ export interface Product {
 }
 
 export interface Review {
-  author: {
+  _id: string;
+  user: {
     id: string;
     username: string;
   };

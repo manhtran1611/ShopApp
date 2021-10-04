@@ -15,6 +15,7 @@ import {
 } from "@material-ui/core/styles";
 import { Button, TextField, Typography } from "@material-ui/core";
 import { Review } from "../../../interface";
+import { fetchReviews, selectAllReviews } from "../../../redux/reviewsSlice";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -109,11 +110,22 @@ export const SingleProductPage: React.FC<Props> = ({ match }: Props) => {
   const product = useAppSelector((state) =>
     selectProductById(state, productId)
   );
-  console.log(product);
+  // console.log(product);
+
+  const reviews = useAppSelector(selectAllReviews);
+  console.log(reviews);
+  const reviewStatus = useAppSelector((state) => state.reviewReducer.status);
+  console.log(reviewStatus);
 
   useEffect(() => {
     dispatch(fetchProductById(productId));
   }, [productId, dispatch]);
+
+  useEffect(() => {
+    if (reviewStatus === "idle") {
+      dispatch(fetchReviews(productId));
+    }
+  }, [reviewStatus, productId, dispatch]);
 
   if (!product) {
     return (
@@ -153,11 +165,11 @@ export const SingleProductPage: React.FC<Props> = ({ match }: Props) => {
           <Button className={classes.cartButton}>Add to Cart</Button>
         </div>
         <div className={classes.reviewContainer}>
-          {product.reviews.length > 0 ? (
-            product.reviews.map((review: Review) => {
+          {reviews ? (
+            reviews.map((review: Review) => {
               return (
                 <div className={classes.review}>
-                  <Typography>{review.author}</Typography>
+                  <Typography>{review.user.username}</Typography>
                   <Typography>{review.text}</Typography>
                   <Typography>{review.date}</Typography>
                 </div>
