@@ -125,7 +125,7 @@ export default function PrimarySearchAppBar() {
               </Badge>
             </IconButton>
             <IconButton color="inherit">
-              <Link to="/signup">
+              <Link to="/user/register">
                 <SupervisorAccountIcon />
               </Link>
             </IconButton>
@@ -134,7 +134,7 @@ export default function PrimarySearchAppBar() {
               aria-label="account of current user"
               color="primary"
             >
-              <Link to="/login">
+              <Link to="/user/login">
                 <AccountCircle />
               </Link>
             </IconButton>

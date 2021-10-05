@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const Signup = (props: RouteComponentProps) => {
+export const Register = (props: RouteComponentProps) => {
   type FormValues = {
     name: string;
     password: string;

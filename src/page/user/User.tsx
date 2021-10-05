@@ -1,14 +1,17 @@
 import React from "react";
-import { Route, Switch } from "react-router-dom";
-import { login } from "./Login/Login";
-import { Signup } from "./Signup/Signup";
+import { Route, RouteComponentProps, Switch } from "react-router-dom";
+import { LoginRoute } from "./Login";
+import { RegisterRoute } from "./Register";
 
 export const User = (props: RouteComponentProps) => {
   return (
     <div>
       <Switch>
-        <Route path="/login" component={login} />
-        <Route path="/signup" render={(props) => <Signup {...props} />} />
+        <Route path="/user/login" component={LoginRoute} />
+        <Route
+          path="/user/register"
+          render={(props) => <RegisterRoute {...props} />}
+        />
       </Switch>
     </div>
   );

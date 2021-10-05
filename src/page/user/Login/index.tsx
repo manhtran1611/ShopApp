@@ -1,5 +1,5 @@
 import React from "react";
 import { Login } from "../../../components/User/Login";
-export const login = () => {
+export const LoginRoute = () => {
   return <Login />;
 };

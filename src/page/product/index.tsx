@@ -5,7 +5,7 @@ export const Product = () => {
   return (
     <div>
       <Switch>
-        <Route path="/:id/" component={SingleProductPage} />
+        <Route path="/products/:id/" component={SingleProductPage} />
       </Switch>
     </div>
   );
