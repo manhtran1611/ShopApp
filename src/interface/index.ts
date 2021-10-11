@@ -1,8 +1,3 @@
-export interface Owner {
-  id: string;
-  number: string;
-}
-
 export interface Product {
   _id: string;
   name: string;
@@ -11,7 +6,7 @@ export interface Product {
   image: string;
   quantity: number;
   reviews: Review[];
-  owner: Owner;
+  user: OutputUser;
   date: Date;
 }
 
@@ -24,7 +19,11 @@ export interface Review {
   text: string;
   date: Date;
 }
-export interface User {
+export interface InputUser {
   name: string;
   password: string;
+}
+export interface OutputUser {
+  _id: string;
+  name: string;
 }

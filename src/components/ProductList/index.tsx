@@ -17,13 +17,17 @@ import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
   container: {
-    display: "grid",
-    maxWidth: "100vw",
-    width: "100vw",
-    height: "100vh",
+    width: "1440px",
+    maxWidth: " calc(100%-1em)",
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "center",
+    alignContent: "center",
+    margin: "0 auto",
+    padding: "0 1em",
   },
   root: {
-    maxWidth: "9em",
+    maxWidth: "10em",
     margin: "1em",
   },
   media: {
@@ -31,6 +35,9 @@ const useStyles = makeStyles({
   },
   title: {
     fontWeight: "bold",
+  },
+  link: {
+    textDecoration: "none",
   },
 });
 
@@ -78,7 +85,10 @@ export const ProductsList = () => {
                   <Button size="small" color="primary">
                     Add to Cart
                   </Button>
-                  <Link to={`/products/${product._id}`}>
+                  <Link
+                    to={`/products/${product._id}`}
+                    className={classes.link}
+                  >
                     <Button size="small" color="primary">
                       Learn more
                     </Button>

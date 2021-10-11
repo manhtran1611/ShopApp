@@ -1,9 +1,9 @@
-import React from "react";
-import { useState } from "react";
+import React, { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import ProductDataService from "../../../services";
-import { RouteComponentProps } from "react-router";
-
+import { RouteComponentProps, useHistory } from "react-router";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
+import { registerUser, selectUser } from "../../../redux/userSlice";
+import { InputUser } from "../../../interface";
 // * MATERIAL UI
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -36,35 +36,27 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const Register = (props: RouteComponentProps) => {
-  type FormValues = {
-    name: string;
-    password: string;
-  };
   const classes = useStyles();
-
-  const [submitted, setSubmitted] = useState(false);
-
-  const { register, handleSubmit } = useForm<FormValues>();
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
-    ProductDataService.addUser(data)
-      .then((response) => {
-        setSubmitted(true);
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      .finally(() => {
-        setTimeout(() => {
-          setSubmitted(false);
-          props.history.push("/");
-        }, 1500);
-      });
+  const history = useHistory();
+  const dispatch = useAppDispatch();
+  const token = useAppSelector(selectUser);
+  const userStatus = useAppSelector((state) => state.userReducer.status);
+  console.log(userStatus);
+  const { register, handleSubmit } = useForm<InputUser>();
+  const onSubmit: SubmitHandler<InputUser> = (user) => {
+    dispatch(registerUser(user));
   };
+
+  useEffect(() => {
+    if (userStatus === "succeeded") {
+      history.push("/");
+    }
+  }, [userStatus, dispatch, history, token]);
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
-      {submitted ? (
+      {userStatus === "succeeded" ? (
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
             <CheckCircleIcon />
@@ -81,37 +73,33 @@ export const Register = (props: RouteComponentProps) => {
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          <form
-            className={classes.form}
-            onSubmit={handleSubmit(onSubmit)}
-            noValidate
-          >
+          <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
             <TextField
               variant="outlined"
-              margin="normal"
               required
               fullWidth
-              type="text"
-              label="Username"
               autoFocus
+              margin="normal"
+              label="Username"
+              type="text"
               {...register("name")}
             />
             <TextField
               variant="outlined"
-              margin="normal"
               required
               fullWidth
+              margin="normal"
               label="Password"
               type="password"
+              helperText="Incorrect Entry"
               {...register("password")}
             />
             <Button
+              className={classes.submit}
               type="submit"
-              value="Sign up"
               fullWidth
               variant="contained"
               color="primary"
-              className={classes.submit}
             >
               Sign Up
             </Button>

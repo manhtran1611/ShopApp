@@ -42,7 +42,7 @@ export const addNewProduct = createAsyncThunk(
   "products/addProduct",
   async (initialProduct: Product) => {
     const response = await ProductDataService.addProduct(initialProduct);
-    console.log(response);
+    console.log(response.data);
     return response.data;
   }
 );
@@ -95,6 +95,7 @@ const productsSlice = createSlice({
       .addCase(fetchProductById.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
+        state.status = "idle";
       });
     // .addCase(addNewProduct.fulfilled, (state, action) => {
     //   state.status = "succeeded";

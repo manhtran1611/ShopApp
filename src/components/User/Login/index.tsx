@@ -1,7 +1,9 @@
-import React from "react";
-import { useState } from "react";
+import React, { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import ProductDataService from "../../../services";
+import { RouteComponentProps, useHistory } from "react-router";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
+import { InputUser } from "../../../interface";
+import { loginUser, selectUser } from "../../../redux/userSlice";
 
 //  * MATERIAL UI
 import Avatar from "@material-ui/core/Avatar";
@@ -36,41 +38,28 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const Login = (props: any) => {
-  type FormValues = {
-    name: string;
-    password: string;
-  };
-
+export const Login = (props: RouteComponentProps) => {
   const classes = useStyles();
-
-  const [submitted, setSubmitted] = useState(false);
-  // const [wrongPassword, setError] = useState(false);
-  const { register, handleSubmit } = useForm<FormValues>();
-
-  // ! Need to fix, need to show validation
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
-    ProductDataService.loginUser(data)
-      .then((response) => {
-        setSubmitted(true);
-        console.log(response);
-      })
-      .then(() => {
-        setTimeout(() => {
-          setSubmitted(false);
-          props.history.push("/");
-        }, 1000);
-      })
-      .catch((error) => {
-        console.error(error);
-        // setError(true);
-      });
+  const history = useHistory();
+  const dispatch = useAppDispatch();
+  const token = useAppSelector(selectUser);
+  const userStatus = useAppSelector((state) => state.userReducer.status);
+  console.log(userStatus);
+  const { register, handleSubmit } = useForm<InputUser>();
+  const onSubmit: SubmitHandler<InputUser> = (user) => {
+    dispatch(loginUser(user));
   };
+
+  useEffect(() => {
+    if (userStatus === "succeeded") {
+      history.push("/");
+    }
+  }, [userStatus, token, history, dispatch]);
 
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
-      {submitted ? (
+      {userStatus === "succeeded" ? (
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
             <CheckCircleIcon />
@@ -109,12 +98,8 @@ export const Login = (props: any) => {
               label="Password"
               type="password"
               {...register("password")}
+              helperText="Wrong password"
             />
-            {/* {wrongPassword && (
-              <div>
-                <Typography variant="body2">Wrong password</Typography>
-              </div>
-            )} */}
             <Button
               type="submit"
               value="Login"
@@ -127,7 +112,7 @@ export const Login = (props: any) => {
             </Button>
             <Grid container>
               <Grid item>
-                <Link href="/signup" variant="body2">
+                <Link href="/user/register" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>

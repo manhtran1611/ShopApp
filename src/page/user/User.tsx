@@ -7,7 +7,10 @@ export const User = (props: RouteComponentProps) => {
   return (
     <div>
       <Switch>
-        <Route path="/user/login" component={LoginRoute} />
+        <Route
+          path="/user/login"
+          render={(props) => <LoginRoute {...props} />}
+        />
         <Route
           path="/user/register"
           render={(props) => <RegisterRoute {...props} />}
