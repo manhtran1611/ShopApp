@@ -1,10 +1,11 @@
 import React from "react";
 import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { Product } from "../../interface";
+import { Link } from "react-router-dom";
 
 //  * Redux
 import { fetchProducts, selectAllProducts } from "../../redux/productsSlice";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 
 //  * MATERIAL UI
 import CardContent from "@material-ui/core/CardContent";
@@ -13,7 +14,6 @@ import { Button, CardActionArea, CardMedia } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
-import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
   container: {
@@ -69,15 +69,15 @@ export const ProductsList = () => {
                   />
                   <CardContent>
                     <Typography className={classes.title}>
-                      <div>{product.name}</div>
+                      <p>{product.name}</p>
                     </Typography>
                     <Typography
                       variant="body2"
                       color="textSecondary"
                       component="p"
                     >
-                      <div>Price: {product.price}$</div>
-                      <div>Quantity: {product.quantity}</div>
+                      <p>Price: {product.price}$</p>
+                      <p>Quantity: {product.quantity}</p>
                     </Typography>
                   </CardContent>
                 </CardActionArea>

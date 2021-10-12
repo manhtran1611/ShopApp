@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { RouteComponentProps, useHistory } from "react-router";
-import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { InputUser } from "../../../interface";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { loginUser, selectUser } from "../../../redux/userSlice";
 
 //  * MATERIAL UI
@@ -36,30 +36,35 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  helperText: {
+    fontSize: "1em",
+    color: "red",
+  },
 }));
 
 export const Login = (props: RouteComponentProps) => {
   const classes = useStyles();
   const history = useHistory();
   const dispatch = useAppDispatch();
-  const token = useAppSelector(selectUser);
-  const userStatus = useAppSelector((state) => state.userReducer.status);
-  console.log(userStatus);
   const { register, handleSubmit } = useForm<InputUser>();
+  const token = useAppSelector(selectUser);
+  const { status, error } = useAppSelector((state) => state.userReducer);
+  console.log(status);
+  console.log(error);
   const onSubmit: SubmitHandler<InputUser> = (user) => {
     dispatch(loginUser(user));
   };
 
   useEffect(() => {
-    if (userStatus === "succeeded") {
+    if (status === "succeeded") {
       history.push("/");
     }
-  }, [userStatus, token, history, dispatch]);
+  }, [status, token, history, dispatch]);
 
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
-      {userStatus === "succeeded" ? (
+      {status === "succeeded" ? (
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
             <CheckCircleIcon />
@@ -98,7 +103,10 @@ export const Login = (props: RouteComponentProps) => {
               label="Password"
               type="password"
               {...register("password")}
-              helperText="Wrong password"
+              FormHelperTextProps={{
+                className: classes.helperText,
+              }}
+              helperText={error}
             />
             <Button
               type="submit"

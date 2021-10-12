@@ -33,6 +33,10 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  helperText: {
+    color: "red",
+    fontSize: "1em",
+  },
 }));
 
 export const Register = (props: RouteComponentProps) => {
@@ -40,23 +44,24 @@ export const Register = (props: RouteComponentProps) => {
   const history = useHistory();
   const dispatch = useAppDispatch();
   const token = useAppSelector(selectUser);
-  const userStatus = useAppSelector((state) => state.userReducer.status);
-  console.log(userStatus);
+  const { status, error } = useAppSelector((state) => state.userReducer);
+  console.log(status);
+  console.log(error);
   const { register, handleSubmit } = useForm<InputUser>();
   const onSubmit: SubmitHandler<InputUser> = (user) => {
     dispatch(registerUser(user));
   };
 
   useEffect(() => {
-    if (userStatus === "succeeded") {
+    if (status === "succeeded") {
       history.push("/");
     }
-  }, [userStatus, dispatch, history, token]);
+  }, [status, dispatch, history, token]);
 
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
-      {userStatus === "succeeded" ? (
+      {status === "succeeded" ? (
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
             <CheckCircleIcon />
@@ -76,7 +81,7 @@ export const Register = (props: RouteComponentProps) => {
           <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
             <TextField
               variant="outlined"
-              required
+              required={true}
               fullWidth
               autoFocus
               margin="normal"
@@ -86,12 +91,15 @@ export const Register = (props: RouteComponentProps) => {
             />
             <TextField
               variant="outlined"
-              required
+              required={true}
               fullWidth
               margin="normal"
               label="Password"
               type="password"
-              helperText="Incorrect Entry"
+              FormHelperTextProps={{
+                className: classes.helperText,
+              }}
+              helperText={error}
               {...register("password")}
             />
             <Button
