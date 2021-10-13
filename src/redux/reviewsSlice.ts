@@ -24,7 +24,7 @@ export const fetchReviews = createAsyncThunk(
   "reviews/getReview",
   async (productId: string) => {
     const response = await ProductDataService.getReviews(productId);
-    console.log(response.data);
+    // console.log(response.data);
     return response.data.reviews;
   }
 );

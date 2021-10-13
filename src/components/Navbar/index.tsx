@@ -1,13 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
+// * REDUX
+import { getMemorizedNumItems } from "../../redux/cartSlice";
+import { useAppSelector } from "../../redux/hooks";
 //  * MATERIAL UI
-import {
-  alpha,
-  makeStyles,
-  Theme,
-  createStyles,
-} from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
@@ -20,8 +16,14 @@ import MoreIcon from "@material-ui/icons/MoreVert";
 import ShoppingBasketIcon from "@material-ui/icons/ShoppingBasket";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import SupervisorAccountIcon from "@material-ui/icons/SupervisorAccount";
+import {
+  alpha,
+  makeStyles,
+  Theme,
+  createStyles,
+} from "@material-ui/core/styles";
 
-const useStyles = makeStyles((theme: Theme) =>
+export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     grow: {
       flexGrow: 1,
@@ -91,19 +93,24 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function PrimarySearchAppBar() {
   const classes = useStyles();
-
+  const numItems = useAppSelector(getMemorizedNumItems);
   return (
     <div className={classes.grow}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton className={classes.menuButton} color="inherit">
-            <a href="/">
+          <Link to="/" color="inherit">
+            <IconButton className={classes.menuButton} color="inherit">
               <ShoppingBasketIcon />
-            </a>
-          </IconButton>
-          <Typography className={classes.title} variant="h6" noWrap>
-            Shop App
-          </Typography>
+            </IconButton>
+            <Typography
+              component="span"
+              className={classes.title}
+              variant="h6"
+              noWrap
+            >
+              Shop App
+            </Typography>
+          </Link>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
@@ -114,16 +121,17 @@ export default function PrimarySearchAppBar() {
                 root: classes.inputRoot,
                 input: classes.inputInput,
               }}
-              inputProps={{ "aria-label": "search" }}
             />
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <IconButton color="inherit">
-              <Badge badgeContent={1} color="secondary">
-                <ShoppingCartIcon />
-              </Badge>
-            </IconButton>
+            <Link to="/cart" color="inherit">
+              <IconButton color="inherit">
+                <Badge badgeContent={numItems} color="secondary">
+                  <ShoppingCartIcon />
+                </Badge>
+              </IconButton>
+            </Link>
             <IconButton color="inherit">
               <Link to="/user/register">
                 <SupervisorAccountIcon />

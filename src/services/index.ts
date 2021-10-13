@@ -1,5 +1,5 @@
 import API from "../axios";
-import { Product, Review, InputUser } from "../interface";
+import { Product, Review, InputUser, CartItems } from "../interface";
 class ProductDataService {
   getAllProduct(page: number = 0) {
     return API.get(`products?page=${page}`);
@@ -30,6 +30,9 @@ class ProductDataService {
   }
   deleteReview(productId: string, reviewId: string) {
     return API.delete(`products/${productId}/reviews/${reviewId}`);
+  }
+  checkoutCart(cartItems: CartItems) {
+    return API.post(`/cart`, cartItems);
   }
   registerUser(user: InputUser) {
     return API.post("/user/register", user);

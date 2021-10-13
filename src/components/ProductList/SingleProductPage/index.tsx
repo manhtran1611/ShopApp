@@ -113,9 +113,9 @@ export const SingleProductPage: React.FC<Props> = ({ match }: Props) => {
   // console.log(product);
 
   const reviews = useAppSelector(selectAllReviews);
-  console.log(reviews);
+  // console.log(reviews);
   const reviewStatus = useAppSelector((state) => state.reviewReducer.status);
-  console.log(reviewStatus);
+  // console.log(reviewStatus);
 
   useEffect(() => {
     dispatch(fetchProductById(productId));
@@ -140,11 +140,11 @@ export const SingleProductPage: React.FC<Props> = ({ match }: Props) => {
         <img src={product.image} alt={product.name} />
       </div>
       <article className={classes.text}>
-        <Typography className={classes.title}>
+        <Typography component={"span"} className={classes.title}>
           <div>{product.name}</div>
           <div className={classes.price}>{product.price}$</div>
         </Typography>
-        <Typography className={classes.description}>
+        <Typography component={"span"} className={classes.description}>
           {product.description} Lorem ipsum dolor, sit amet consectetur
           adipisicing elit. At commodi soluta earum ad, repudiandae accusantium
           pariatur aliquam ullam, repellat velit eaque voluptatem dignissimos
@@ -168,7 +168,7 @@ export const SingleProductPage: React.FC<Props> = ({ match }: Props) => {
           {reviews ? (
             reviews.map((review: Review) => {
               return (
-                <div className={classes.review}>
+                <div key={review._id} className={classes.review}>
                   <Typography>{review.user.username}</Typography>
                   <Typography>{review.text}</Typography>
                   <Typography>{review.date}</Typography>
@@ -176,7 +176,7 @@ export const SingleProductPage: React.FC<Props> = ({ match }: Props) => {
               );
             })
           ) : (
-            <Typography>No reviews yet</Typography>
+            <Typography component={"span"}>No reviews yet</Typography>
           )}
         </div>
       </article>

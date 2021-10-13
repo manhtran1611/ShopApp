@@ -27,3 +27,7 @@ export interface OutputUser {
   _id: string;
   name: string;
 }
+
+export interface CartItems {
+  [itemId: string]: number;
+}

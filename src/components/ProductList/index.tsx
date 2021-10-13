@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 //  * Redux
 import { fetchProducts, selectAllProducts } from "../../redux/productsSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-
+import { addToCart } from "../../redux/cartSlice";
 //  * MATERIAL UI
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
@@ -59,7 +59,7 @@ export const ProductsList = () => {
       <div className={classes.container}>
         {products.map((product: Product) => {
           return (
-            <div>
+            <div key={product._id}>
               <Card className={classes.root}>
                 <CardActionArea>
                   <CardMedia
@@ -68,21 +68,25 @@ export const ProductsList = () => {
                     title={product.name}
                   />
                   <CardContent>
-                    <Typography className={classes.title}>
-                      <p>{product.name}</p>
+                    <Typography component={"span"} className={classes.title}>
+                      <div>{product.name}</div>
                     </Typography>
                     <Typography
+                      component={"span"}
                       variant="body2"
                       color="textSecondary"
-                      component="p"
                     >
-                      <p>Price: {product.price}$</p>
-                      <p>Quantity: {product.quantity}</p>
+                      <div>Price: {product.price}$</div>
+                      <div>Quantity: {product.quantity}</div>
                     </Typography>
                   </CardContent>
                 </CardActionArea>
                 <CardActions>
-                  <Button size="small" color="primary">
+                  <Button
+                    size="small"
+                    color="primary"
+                    onClick={() => dispatch(addToCart(product._id))}
+                  >
                     Add to Cart
                   </Button>
                   <Link
