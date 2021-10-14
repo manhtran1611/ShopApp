@@ -33,3 +33,9 @@ export interface OutputUser {
 export interface CartItems {
   [itemId: string]: number;
 }
+
+export interface Filter {
+  query: string;
+  value: string;
+  page: string;
+}

@@ -4,7 +4,7 @@ import {
   createAsyncThunk,
 } from "@reduxjs/toolkit";
 import ProductDataService from "../services";
-import { Product } from "../interface";
+import { Product, Filter } from "../interface";
 import { RootState } from "./rootReducer";
 
 interface ProductState {
@@ -23,8 +23,17 @@ const initialState = productsAdapter.getInitialState({
 
 export const fetchProducts = createAsyncThunk(
   "products/getAllProducts",
-  async () => {
-    const response = await ProductDataService.getAllProduct();
+  async (page: string) => {
+    const response = await ProductDataService.getAllProduct(page);
+    return response.data.product;
+  }
+);
+
+export const findProduct = createAsyncThunk(
+  "products/find",
+  async (filter: Filter) => {
+    const response = await ProductDataService.findProducts(filter);
+    console.log(response.data);
     return response.data.product;
   }
 );
@@ -74,9 +83,6 @@ const productsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchProducts.pending, (state, action) => {
-        state.status = "pending";
-      })
       .addCase(fetchProducts.fulfilled, (state, action) => {
         state.status = "succeeded";
         productsAdapter.upsertMany(state, action.payload);
@@ -85,14 +91,20 @@ const productsSlice = createSlice({
         state.status = "failed";
         state.error = action.error.message;
       })
-      .addCase(fetchProductById.pending, (state, action) => {
-        state.status = "pending";
-      })
       .addCase(fetchProductById.fulfilled, (state, action) => {
         state.status = "succeeded";
         productsAdapter.upsertOne(state, action.payload);
       })
       .addCase(fetchProductById.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+        state.status = "idle";
+      })
+      .addCase(findProduct.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        productsAdapter.updateMany(state, action.payload);
+      })
+      .addCase(findProduct.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
         state.status = "idle";

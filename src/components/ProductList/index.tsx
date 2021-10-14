@@ -1,10 +1,14 @@
 import React from "react";
 import { useEffect } from "react";
 import { Product } from "../../interface";
-import { Link } from "react-router-dom";
-
+import { Link, RouteComponentProps, useLocation } from "react-router-dom";
+import { Filter } from "../../interface/index";
 //  * Redux
-import { fetchProducts, selectAllProducts } from "../../redux/productsSlice";
+import {
+  fetchProducts,
+  findProduct,
+  selectAllProducts,
+} from "../../redux/productsSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { addToCart } from "../../redux/cartSlice";
 //  * MATERIAL UI
@@ -51,17 +55,22 @@ const useStyles = makeStyles({
   },
 });
 
-export const ProductsList = () => {
+export const ProductsList: React.FC = () => {
   const classes = useStyles();
   const dispatch = useAppDispatch();
+  const location = useLocation();
+  function useQuery() {
+    return new URLSearchParams(location.search);
+  }
+  const page = useQuery().get("page");
   const products = useAppSelector(selectAllProducts);
-  const productStatus = useAppSelector((state) => state.productsReducer.status);
+  // const productStatus = useAppSelector((state) => state.productsReducer.status);
 
   useEffect(() => {
-    if (productStatus === "idle") {
-      dispatch(fetchProducts());
+    if (page !== null) {
+      dispatch(fetchProducts(page));
     }
-  }, [productStatus, dispatch]);
+  }, [page, dispatch]);
 
   return (
     <section className={classes.container}>

@@ -112,7 +112,7 @@ export const Navbar = () => {
             <SearchIcon />
           </div>
           <InputBase
-            placeholder="Search…"
+            placeholder="Search something"
             classes={{
               root: classes.inputRoot,
               input: classes.inputInput,

@@ -5,16 +5,19 @@ import {
   InputUser,
   CartItems,
   OutputUser,
+  Filter,
 } from "../interface";
 class ProductDataService {
-  getAllProduct(page: number = 0) {
+  getAllProduct(page: string) {
     return API.get(`products?page=${page}`);
   }
   getProductById(id: string) {
     return API.get(`products/${id}`);
   }
-  findProduct(query: string, by: string, page = 0) {
-    return API.get(`/products?${by}=${query}&page=${page}`);
+  findProducts(filter: Filter) {
+    return API.get(
+      `products?${filter.query}=${filter.value}&page=${filter.page}`
+    );
   }
   addProduct(data: Product) {
     return API.post(`/products`, data);
