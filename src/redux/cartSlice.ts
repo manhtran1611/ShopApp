@@ -1,13 +1,6 @@
-import {
-  createAsyncThunk,
-  createSelector,
-  createSlice,
-  PayloadAction,
-} from "@reduxjs/toolkit";
-import { CartItems } from "../interface";
+import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "./rootReducer";
 import { AppDispatch } from "./store";
-import ProductDataService from "../services/index";
 
 export interface CartState {
   items: { [itemId: string]: number };

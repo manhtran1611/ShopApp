@@ -1,21 +1,18 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { User } from "./User";
+import { Guest } from "./Guest";
 // * REDUX
-import { getMemorizedNumItems } from "../../redux/cartSlice";
 import { useAppSelector } from "../../redux/hooks";
+import { selectUser } from "../../redux/userSlice";
 //  * MATERIAL UI
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import InputBase from "@material-ui/core/InputBase";
-import Badge from "@material-ui/core/Badge";
 import SearchIcon from "@material-ui/icons/Search";
-import AccountCircle from "@material-ui/icons/AccountCircle";
-import MoreIcon from "@material-ui/icons/MoreVert";
 import ShoppingBasketIcon from "@material-ui/icons/ShoppingBasket";
-import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
-import SupervisorAccountIcon from "@material-ui/icons/SupervisorAccount";
 import {
   alpha,
   makeStyles,
@@ -23,18 +20,23 @@ import {
   createStyles,
 } from "@material-ui/core/styles";
 
-export const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    container: {
+      background: "linear-gradient(to right, #F37335, #FDC830)",
+    },
     grow: {
       flexGrow: 1,
     },
     menuButton: {
-      marginRight: theme.spacing(2),
+      color: "white",
     },
     title: {
       display: "none",
       [theme.breakpoints.up("sm")]: {
-        display: "block",
+        display: "flex",
+        justifyContent: "center",
+        color: "white",
       },
     },
     search: {
@@ -76,84 +78,50 @@ export const useStyles = makeStyles((theme: Theme) =>
         width: "20em",
       },
     },
-    sectionDesktop: {
-      display: "none",
-      [theme.breakpoints.up("md")]: {
-        display: "flex",
-      },
-    },
-    sectionMobile: {
+    links: {
+      textDecoration: "none",
       display: "flex",
-      [theme.breakpoints.up("md")]: {
-        display: "none",
-      },
+      alignItems: "center",
+      justifyContent: "center",
     },
   })
 );
 
-export default function PrimarySearchAppBar() {
+export const Navbar = () => {
   const classes = useStyles();
-  const numItems = useAppSelector(getMemorizedNumItems);
+  const user = useAppSelector(selectUser);
+
   return (
-    <div className={classes.grow}>
-      <AppBar position="static">
-        <Toolbar>
-          <Link to="/" color="inherit">
-            <IconButton className={classes.menuButton} color="inherit">
-              <ShoppingBasketIcon />
-            </IconButton>
-            <Typography
-              component="span"
-              className={classes.title}
-              variant="h6"
-              noWrap
-            >
-              Shop App
-            </Typography>
-          </Link>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-            />
+    <AppBar position="static" className={classes.container}>
+      <Toolbar>
+        <Link to="/" className={classes.links}>
+          <IconButton>
+            <ShoppingBasketIcon className={classes.menuButton} />
+          </IconButton>
+          <Typography
+            component="span"
+            className={classes.title}
+            variant="h6"
+            noWrap
+          >
+            Shop App
+          </Typography>
+        </Link>
+        <div className={classes.search}>
+          <div className={classes.searchIcon}>
+            <SearchIcon />
           </div>
-          <div className={classes.grow} />
-          <div className={classes.sectionDesktop}>
-            <Link to="/cart" color="inherit">
-              <IconButton color="inherit">
-                <Badge badgeContent={numItems} color="secondary">
-                  <ShoppingCartIcon />
-                </Badge>
-              </IconButton>
-            </Link>
-            <IconButton color="inherit">
-              <Link to="/user/register">
-                <SupervisorAccountIcon />
-              </Link>
-            </IconButton>
-            <IconButton
-              edge="end"
-              aria-label="account of current user"
-              color="primary"
-            >
-              <Link to="/user/login">
-                <AccountCircle />
-              </Link>
-            </IconButton>
-          </div>
-          <div className={classes.sectionMobile}>
-            <IconButton color="inherit">
-              <MoreIcon />
-            </IconButton>
-          </div>
-        </Toolbar>
-      </AppBar>
-    </div>
+          <InputBase
+            placeholder="Search…"
+            classes={{
+              root: classes.inputRoot,
+              input: classes.inputInput,
+            }}
+          />
+        </div>
+        <div className={classes.grow} />
+        {user.length > 0 ? <User /> : <Guest />}
+      </Toolbar>
+    </AppBar>
   );
-}
+};

@@ -17,18 +17,18 @@ import CardActions from "@material-ui/core/CardActions";
 
 const useStyles = makeStyles({
   container: {
-    width: "1440px",
+    width: "90vw",
     maxWidth: " calc(100%-1em)",
     display: "flex",
     flexWrap: "wrap",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignContent: "center",
-    margin: "0 auto",
-    padding: "0 1em",
+    margin: "1em 0 1em 8em",
   },
-  root: {
-    maxWidth: "10em",
+  card: {
+    width: "10em",
     margin: "1em",
+    backgroundColor: "snow",
   },
   media: {
     height: 140,
@@ -38,6 +38,16 @@ const useStyles = makeStyles({
   },
   link: {
     textDecoration: "none",
+    color: "#3f50b5",
+  },
+  buttonWrapper: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  button: {
+    color: "snow",
+    background: "linear-gradient(to right, #F37335, #FDC830)",
   },
 });
 
@@ -54,55 +64,50 @@ export const ProductsList = () => {
   }, [productStatus, dispatch]);
 
   return (
-    <section>
-      <h2>Product Lists</h2>
-      <div className={classes.container}>
-        {products.map((product: Product) => {
-          return (
-            <div key={product._id}>
-              <Card className={classes.root}>
-                <CardActionArea>
-                  <CardMedia
-                    className={classes.media}
-                    image={product.image}
-                    title={product.name}
-                  />
-                  <CardContent>
-                    <Typography component={"span"} className={classes.title}>
-                      <div>{product.name}</div>
-                    </Typography>
-                    <Typography
-                      component={"span"}
-                      variant="body2"
-                      color="textSecondary"
-                    >
-                      <div>Price: {product.price}$</div>
-                      <div>Quantity: {product.quantity}</div>
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-                <CardActions>
-                  <Button
-                    size="small"
-                    color="primary"
-                    onClick={() => dispatch(addToCart(product._id))}
+    <section className={classes.container}>
+      {products.map((product: Product) => {
+        return (
+          <Card className={classes.card} key={product._id}>
+            <CardActionArea>
+              <Link to={`/products/${product._id}`} className={classes.link}>
+                <CardMedia
+                  className={classes.media}
+                  image={product.image}
+                  title={product.name}
+                />
+                <CardContent>
+                  <Typography component={"span"} className={classes.title}>
+                    {product.name}
+                  </Typography>
+                  <Typography
+                    component={"div"}
+                    variant="body2"
+                    color="textSecondary"
                   >
-                    Add to Cart
-                  </Button>
-                  <Link
-                    to={`/products/${product._id}`}
-                    className={classes.link}
+                    Price: {product.price}$
+                  </Typography>
+                  <Typography
+                    component={"div"}
+                    variant="body2"
+                    color="textSecondary"
                   >
-                    <Button size="small" color="primary">
-                      Learn more
-                    </Button>
-                  </Link>
-                </CardActions>
-              </Card>
-            </div>
-          );
-        })}
-      </div>
+                    Quantity: {product.quantity}
+                  </Typography>
+                </CardContent>
+              </Link>
+            </CardActionArea>
+            <CardActions className={classes.buttonWrapper}>
+              <Button
+                variant="contained"
+                className={classes.button}
+                onClick={() => dispatch(addToCart(product._id))}
+              >
+                Add to Cart
+              </Button>
+            </CardActions>
+          </Card>
+        );
+      })}
     </section>
   );
 };

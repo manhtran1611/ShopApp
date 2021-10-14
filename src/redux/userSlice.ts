@@ -24,8 +24,8 @@ interface Response {
   token: string;
 }
 
-const userAdapter = createEntityAdapter({
-  // selectId: (response: Response) => response.token,
+const userAdapter = createEntityAdapter<OutputUser>({
+  selectId: (user) => user._id,
 });
 
 const initialState = userAdapter.getInitialState({
@@ -71,6 +71,15 @@ export const loginUser = createAsyncThunk<
   }
 });
 
+export const logoutUser = createAsyncThunk(
+  "user/logout",
+  async (user: OutputUser) => {
+    const response = await ProductDataService.logoutUser(user);
+    console.log(response.data);
+    return response.data;
+  }
+);
+
 const userSlice = createSlice({
   name: "user",
   initialState: initialState,
@@ -79,7 +88,7 @@ const userSlice = createSlice({
     builder
       .addCase(registerUser.fulfilled, (state, action) => {
         state.status = "succeeded";
-        userAdapter.addOne(state, action.payload);
+        userAdapter.addOne(state, action.payload.user);
       })
       .addCase(registerUser.rejected, (state, action) => {
         if (action.payload) {
@@ -91,7 +100,7 @@ const userSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.status = "succeeded";
-        userAdapter.addOne(state, action.payload);
+        userAdapter.addOne(state, action.payload.user);
       })
       .addCase(loginUser.rejected, (state, action) => {
         if (action.payload) {
@@ -100,6 +109,14 @@ const userSlice = createSlice({
         } else {
           state.error = action.error.message;
         }
+      })
+      .addCase(logoutUser.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        userAdapter.removeOne(state, action.payload.user._id);
+      })
+      .addCase(logoutUser.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
       });
   },
 });

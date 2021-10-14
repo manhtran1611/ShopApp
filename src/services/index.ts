@@ -1,5 +1,11 @@
 import API from "../axios";
-import { Product, Review, InputUser, CartItems } from "../interface";
+import {
+  Product,
+  Review,
+  InputUser,
+  CartItems,
+  OutputUser,
+} from "../interface";
 class ProductDataService {
   getAllProduct(page: number = 0) {
     return API.get(`products?page=${page}`);
@@ -40,8 +46,8 @@ class ProductDataService {
   loginUser(user: InputUser) {
     return API.post("/user/login", user);
   }
-  logoutUser() {
-    return API.get("/user/logout");
+  logoutUser(user: OutputUser) {
+    return API.post("/user/logout", user);
   }
 }
 

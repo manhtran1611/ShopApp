@@ -26,6 +26,8 @@ export interface InputUser {
 export interface OutputUser {
   _id: string;
   name: string;
+  password: string;
+  date: Date;
 }
 
 export interface CartItems {
