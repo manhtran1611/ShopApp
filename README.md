@@ -22,9 +22,9 @@ A page replicated a shopping app which fetch data from a real backend server. Yo
 
 Users should be able to:
 
-- Click on to copy the color HEX, RGB or RGBA code.
-- Modify the brightness of each color
-- Create a brand new color of their own, drag and drop any color they like and name them.
+- See products, inspect them
+- Add products to cart, checkout
+- Login, Register and Logout
 
 ### Screenshot
 
