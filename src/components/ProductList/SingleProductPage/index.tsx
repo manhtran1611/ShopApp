@@ -13,7 +13,7 @@ import {
   alpha,
   Theme,
 } from "@material-ui/core/styles";
-import { Button, TextField, Typography } from "@material-ui/core";
+import { Button, Typography } from "@material-ui/core";
 import { Review } from "../../../interface";
 import { fetchReviews, selectAllReviews } from "../../../redux/reviewsSlice";
 import { addToCart } from "../../../redux/cartSlice";
@@ -21,12 +21,14 @@ import { addToCart } from "../../../redux/cartSlice";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     container: {
-      fontFamily: "Roboto",
-      fontSize: "16px",
-      backgroundColor: "#FCFFEB",
+      width: "90vw",
+      height: "87vh",
+      maxWidth: " calc(100%-1em)",
+      maxHeight: " calc(100%-1em)",
       display: "flex",
-      width: "100vw",
-      height: "100vh",
+      justifyContent: "flex-start",
+      alignContent: "center",
+      margin: "1em 0 1em 8em",
     },
     image: {
       margin: "3em",
@@ -93,7 +95,17 @@ const useStyles = makeStyles((theme: Theme) =>
       border: "solid 1px #DB2B39",
     },
     review: {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "left",
       padding: "1em",
+    },
+    username: {
+      fontWeight: "bold",
+    },
+    reviewText: {
+      margin: "1em",
+      fontStyle: "italic",
     },
   })
 );
@@ -111,13 +123,9 @@ export const SingleProductPage: React.FC<Props> = ({ match }: Props) => {
   const product = useAppSelector((state) =>
     selectProductById(state, productId)
   );
-  // console.log(product);
 
   const reviews = useAppSelector(selectAllReviews);
-  // console.log(reviews);
   const reviewStatus = useAppSelector((state) => state.reviewReducer.status);
-  // console.log(reviewStatus);
-
   useEffect(() => {
     dispatch(fetchProductById(productId));
   }, [productId, dispatch]);
@@ -152,17 +160,6 @@ export const SingleProductPage: React.FC<Props> = ({ match }: Props) => {
           quaerat, dicta cum necessitatibus totam! Modi, ratione!
         </Typography>
         <div className={classes.selector}>
-          <TextField
-            className={classes.input}
-            type="number"
-            InputProps={{
-              inputProps: {
-                max: product.quantity,
-                min: 1,
-              },
-            }}
-            defaultValue={1}
-          />
           <Button
             variant="contained"
             className={classes.cartButton}
@@ -176,9 +173,12 @@ export const SingleProductPage: React.FC<Props> = ({ match }: Props) => {
             reviews.map((review: Review) => {
               return (
                 <div key={review._id} className={classes.review}>
-                  <Typography>{review.user.username}</Typography>
-                  <Typography>{review.text}</Typography>
-                  <Typography>{review.date}</Typography>
+                  <Typography component="div" className={classes.username}>
+                    {review.user.username}
+                  </Typography>
+                  <Typography component="div" className={classes.reviewText}>
+                    {review.text}
+                  </Typography>
                 </div>
               );
             })

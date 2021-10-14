@@ -81,7 +81,7 @@ export const Cart = (props: RouteComponentProps) => {
           <tr>
             <th>Product</th>
             <th>Quantity</th>
-            <th>Total</th>
+            <th>Price</th>
             <th>Remove</th>
           </tr>
         </thead>
@@ -111,7 +111,7 @@ export const Cart = (props: RouteComponentProps) => {
             </tr>
           ))}
         </tbody>
-        {!cart && (
+        {cart && (
           <tfoot>
             <tr>
               <td>Total</td>
