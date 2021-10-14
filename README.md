@@ -2,18 +2,16 @@
 
 A page replicated a shopping app which fetch data from a real backend server. You can go and buy your favorite product!
 
-### Links
-
-- You can view the page live here: (#URL)
-
 ## Table of contents
 
 - [Overview](#overview)
   - [The challenge](#the-challenge)
   - [Screenshot](#screenshot)
+  - [Links](#links)
 - [My process](#my-process)
   - [Built with](#built-with)
   - [What I learned](#what-i-learned)
+  - [Continued development](#continued-development)
 - [Author](#author)
 
 ## Overview
@@ -29,6 +27,10 @@ Users should be able to:
 ### Screenshot
 
 ![](./screenshot.png)
+
+### Links
+
+- You can view the page live here: (#URL)
 
 ## My process
 
