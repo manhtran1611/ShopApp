@@ -84,11 +84,10 @@ const productsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchProducts.fulfilled, (state, action) => {
-        state.status = "succeeded";
+        productsAdapter.removeAll(state);
         productsAdapter.upsertMany(state, action.payload);
       })
       .addCase(fetchProducts.rejected, (state, action) => {
-        state.status = "failed";
         state.error = action.error.message;
       })
       .addCase(fetchProductById.fulfilled, (state, action) => {
@@ -96,15 +95,6 @@ const productsSlice = createSlice({
         productsAdapter.upsertOne(state, action.payload);
       })
       .addCase(fetchProductById.rejected, (state, action) => {
-        state.status = "failed";
-        state.error = action.error.message;
-        state.status = "idle";
-      })
-      .addCase(findProduct.fulfilled, (state, action) => {
-        state.status = "succeeded";
-        productsAdapter.updateMany(state, action.payload);
-      })
-      .addCase(findProduct.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
         state.status = "idle";

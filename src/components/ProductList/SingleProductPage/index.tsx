@@ -16,6 +16,7 @@ import {
 import { Button, TextField, Typography } from "@material-ui/core";
 import { Review } from "../../../interface";
 import { fetchReviews, selectAllReviews } from "../../../redux/reviewsSlice";
+import { addToCart } from "../../../redux/cartSlice";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -162,7 +163,13 @@ export const SingleProductPage: React.FC<Props> = ({ match }: Props) => {
             }}
             defaultValue={1}
           />
-          <Button className={classes.cartButton}>Add to Cart</Button>
+          <Button
+            variant="contained"
+            className={classes.cartButton}
+            onClick={() => dispatch(addToCart(product._id))}
+          >
+            Add to Cart
+          </Button>
         </div>
         <div className={classes.reviewContainer}>
           {reviews ? (
