@@ -30,7 +30,7 @@ Users should be able to:
 
 ### Links
 
-- You can view the page live here: (#URL)
+- You can view the page live here: (https://manhtran1611.github.io/ShopApp/)
 
 ## My process
 
