@@ -1,46 +1,77 @@
-# Getting Started with Create React App
+# Shop App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A page replicated a shopping app which fetch data from a real backend server. You can go and buy your favorite product!
 
-## Available Scripts
+### Links
 
-In the project directory, you can run:
+- You can view the page live here: (#URL)
 
-### `yarn start`
+## Table of contents
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- [Overview](#overview)
+  - [The challenge](#the-challenge)
+  - [Screenshot](#screenshot)
+- [My process](#my-process)
+  - [Built with](#built-with)
+  - [What I learned](#what-i-learned)
+- [Author](#author)
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Overview
 
-### `yarn test`
+### The challenge
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Users should be able to:
 
-### `yarn build`
+- Click on to copy the color HEX, RGB or RGBA code.
+- Modify the brightness of each color
+- Create a brand new color of their own, drag and drop any color they like and name them.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Screenshot
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+![](./screenshot.png)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## My process
 
-### `yarn eject`
+### Built with
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- Semantic HTML5 markup
+- CSS custom properties
+- Flexbox
+- Javascript
+- Axios
+- REACTJS
+- REDUX
+- MATERIAL UI
+- JSS
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### What I learned
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+```js
+export const loginUser = createAsyncThunk<
+  Response,
+  InputUser,
+  { rejectValue: ValidationErrors }
+>("user/login", async (user, { rejectWithValue }) => {
+  try {
+    const response = await ProductDataService.loginUser(user);
+    API.defaults.headers.common = { Authorization: response.data.token };
+    return response.data;
+  } catch (err: any) {
+    let error: AxiosError<ValidationErrors> = err;
+    if (!error.response) {
+      throw err;
+    }
+    console.log(error.response.data);
+    return rejectWithValue(error.response.data);
+  }
+});
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### Continued development
 
-## Learn More
+I will continue to develop this app. It does not have a lot of functionality as of now. I'd like to add categories and search bar for people to find the products more easily.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Author
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- Frontend Mentor - [@manhtran1611](https://www.frontendmentor.io/profile/manhtran1611)
+- Git hub - [@manhtran1611](https://github.com/manhtran1611)
