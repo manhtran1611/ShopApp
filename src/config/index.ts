@@ -1,3 +1,4 @@
 export default {
-  baseURL: process.env.BASE_URL,
+  apiURL: process.env.REACT_APP_API_URL,
+  publicURL: process.env.PUBLIC_URL,
 };

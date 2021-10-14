@@ -6,11 +6,12 @@ import { BrowserRouter } from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
 import store from "./redux/store";
 import { Provider } from "react-redux";
+import config from "./config";
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <BrowserRouter basename="/ShopApp">
+      <BrowserRouter basename={config.publicURL}>
         <App />
       </BrowserRouter>
     </Provider>
