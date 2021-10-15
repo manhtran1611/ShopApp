@@ -49,8 +49,10 @@ export const Login = (props: RouteComponentProps) => {
   const { register, handleSubmit } = useForm<InputUser>();
   const token = useAppSelector(selectUser);
   const { status, error } = useAppSelector((state) => state.userReducer);
-  console.log(status);
-  console.log(error);
+  const test = useAppSelector((state) => state.userReducer);
+  console.log(test);
+  // console.log(status);
+  // console.log(error);
   const onSubmit: SubmitHandler<InputUser> = (user) => {
     dispatch(loginUser(user));
   };

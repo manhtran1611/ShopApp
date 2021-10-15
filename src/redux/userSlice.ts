@@ -41,6 +41,7 @@ export const registerUser = createAsyncThunk<
   try {
     const response = await ProductDataService.registerUser(user);
     API.defaults.headers.common = { Authorization: response.data.token };
+    console.log(response.data);
     return response.data;
   } catch (err: any) {
     let error: AxiosError<ValidationErrors> = err;
@@ -59,7 +60,8 @@ export const loginUser = createAsyncThunk<
 >("user/login", async (user, { rejectWithValue }) => {
   try {
     const response = await ProductDataService.loginUser(user);
-    API.defaults.headers.common = { Authorization: response.data.token };
+    const token = response.data.token;
+    API.defaults.headers.common = { Authorization: token };
     return response.data;
   } catch (err: any) {
     let error: AxiosError<ValidationErrors> = err;
