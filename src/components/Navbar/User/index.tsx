@@ -1,11 +1,14 @@
 import { Typography } from "@material-ui/core";
 import React from "react";
 import { Link } from "react-router-dom";
-import { useAppSelector } from "../../../redux/hooks";
-import { selectUser } from "../../../redux/userSlice";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
+import { logoutUser, selectUser } from "../../../redux/userSlice";
+import Badge from "@material-ui/core/Badge";
+import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import { Theme, makeStyles, createStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import LogoutIcon from "@mui/icons-material/Logout";
+import { getMemorizedNumItems } from "../../../redux/cartSlice";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     links: {
@@ -44,14 +47,23 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export const User = () => {
   const classes = useStyles();
+  const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
   const username = user[0].name;
+  const numItems = useAppSelector(getMemorizedNumItems);
   console.log(user);
   return (
     <div>
       <section className={classes.sectionDesktop}>
+        <Link to="/cart" className={classes.links}>
+          <IconButton>
+            <Badge badgeContent={numItems} color="secondary">
+              <ShoppingCartIcon className={classes.icon} />
+            </Badge>
+          </IconButton>
+        </Link>
         <Typography className={classes.greeting} component="span">
-          Hello {username}{" "}
+          Welcome {username}
         </Typography>
         <IconButton aria-label="log out" className={classes.iconWrapper}>
           <Link to="/user/logout" className={classes.links}>

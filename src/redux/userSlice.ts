@@ -8,7 +8,6 @@ import API from "../axios";
 import { InputUser, OutputUser } from "../interface";
 import ProductDataService from "../services/index";
 import { RootState } from "./rootReducer";
-
 interface UserState {
   status: "idle" | "succeeded" | "failed";
   error: string | undefined;
@@ -40,8 +39,9 @@ export const registerUser = createAsyncThunk<
 >("user/register", async (user, { rejectWithValue }) => {
   try {
     const response = await ProductDataService.registerUser(user);
-    API.defaults.headers.common = { Authorization: response.data.token };
-    console.log(response.data);
+    const token = response.data.token;
+    API.defaults.headers.common = { Authorization: token };
+    window.localStorage.setItem("token", token);
     return response.data;
   } catch (err: any) {
     let error: AxiosError<ValidationErrors> = err;
@@ -62,6 +62,8 @@ export const loginUser = createAsyncThunk<
     const response = await ProductDataService.loginUser(user);
     const token = response.data.token;
     API.defaults.headers.common = { Authorization: token };
+    window.localStorage.setItem("token", token);
+
     return response.data;
   } catch (err: any) {
     let error: AxiosError<ValidationErrors> = err;
@@ -73,14 +75,11 @@ export const loginUser = createAsyncThunk<
   }
 });
 
-export const logoutUser = createAsyncThunk(
-  "user/logout",
-  async (user: OutputUser) => {
-    const response = await ProductDataService.logoutUser(user);
-    console.log(response.data);
-    return response.data;
-  }
-);
+export const logoutUser = createAsyncThunk("user/logout", async () => {
+  const response = await ProductDataService.logoutUser();
+  window.localStorage.clear();
+  return response.data;
+});
 
 const userSlice = createSlice({
   name: "user",
@@ -95,7 +94,6 @@ const userSlice = createSlice({
       .addCase(registerUser.rejected, (state, action) => {
         if (action.payload) {
           state.error = action.payload.error;
-          // console.log(state.error);
         } else {
           state.error = action.error.message;
         }
@@ -107,18 +105,19 @@ const userSlice = createSlice({
       .addCase(loginUser.rejected, (state, action) => {
         if (action.payload) {
           state.error = action.payload.error;
-          // console.log(state.error);
         } else {
           state.error = action.error.message;
         }
       })
       .addCase(logoutUser.fulfilled, (state, action) => {
         state.status = "succeeded";
-        userAdapter.removeOne(state, action.payload.user._id);
+        userAdapter.removeAll(state);
+        state.status = "idle";
       })
       .addCase(logoutUser.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
+        state.status = "idle";
       });
   },
 });

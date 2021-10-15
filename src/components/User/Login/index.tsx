@@ -3,7 +3,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { RouteComponentProps, useHistory } from "react-router";
 import { InputUser } from "../../../interface";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { loginUser, selectUser } from "../../../redux/userSlice";
+import { loginUser } from "../../../redux/userSlice";
 
 //  * MATERIAL UI
 import Avatar from "@material-ui/core/Avatar";
@@ -47,12 +47,8 @@ export const Login = (props: RouteComponentProps) => {
   const history = useHistory();
   const dispatch = useAppDispatch();
   const { register, handleSubmit } = useForm<InputUser>();
-  const token = useAppSelector(selectUser);
   const { status, error } = useAppSelector((state) => state.userReducer);
-  const test = useAppSelector((state) => state.userReducer);
-  console.log(test);
-  // console.log(status);
-  // console.log(error);
+
   const onSubmit: SubmitHandler<InputUser> = (user) => {
     dispatch(loginUser(user));
   };
@@ -61,7 +57,7 @@ export const Login = (props: RouteComponentProps) => {
     if (status === "succeeded") {
       history.push("/");
     }
-  }, [status, token, history, dispatch]);
+  }, [status, history, dispatch]);
 
   return (
     <Container component="main" maxWidth="xs">

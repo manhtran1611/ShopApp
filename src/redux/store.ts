@@ -11,7 +11,6 @@ const store = configureStore({
 store.subscribe(
   throttle(() => {
     saveState({
-      userReducer: store.getState().userReducer,
       cartReducer: store.getState().cartReducer,
     });
   }, 5000)
