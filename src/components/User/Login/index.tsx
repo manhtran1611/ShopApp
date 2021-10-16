@@ -24,13 +24,16 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    height: "82vh",
+    backgroundSize: "100% auto",
+    backgroundRepeat: "repeat-y",
   },
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: "100%", // Fix IE 11 issue.
+    width: "100%",
     marginTop: theme.spacing(1),
   },
   submit: {
@@ -55,7 +58,7 @@ export const Login = (props: RouteComponentProps) => {
 
   useEffect(() => {
     if (status === "succeeded") {
-      history.push("/");
+      history.push("/#");
     }
   }, [status, history, dispatch]);
 

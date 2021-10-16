@@ -1,14 +1,15 @@
 import { Typography } from "@material-ui/core";
 import React from "react";
 import { Link } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { logoutUser, selectUser } from "../../../redux/userSlice";
+import { useAppSelector } from "../../../redux/hooks";
+import { selectUser } from "../../../redux/userSlice";
 import Badge from "@material-ui/core/Badge";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import { Theme, makeStyles, createStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { getMemorizedNumItems } from "../../../redux/cartSlice";
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     links: {
@@ -18,6 +19,10 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     greeting: {
       fontSize: "1.25em",
+    },
+    username: {
+      fontStyle: "bold",
+      margin: "0.5em",
     },
     iconWrapper: {
       display: "flex",
@@ -47,7 +52,6 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export const User = () => {
   const classes = useStyles();
-  const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
   const username = user[0].name;
   const numItems = useAppSelector(getMemorizedNumItems);
@@ -63,7 +67,10 @@ export const User = () => {
           </IconButton>
         </Link>
         <Typography className={classes.greeting} component="span">
-          Welcome {username}
+          Welcome
+          <Typography className={classes.username} component="span">
+            {username}
+          </Typography>
         </Typography>
         <IconButton aria-label="log out" className={classes.iconWrapper}>
           <Link to="/user/logout" className={classes.links}>

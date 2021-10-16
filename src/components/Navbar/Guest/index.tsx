@@ -2,16 +2,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import IconButton from "@material-ui/core/IconButton";
-import Badge from "@material-ui/core/Badge";
 import AccountCircle from "@material-ui/icons/AccountCircle";
-import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import SupervisorAccountIcon from "@material-ui/icons/SupervisorAccount";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import { Menu, MenuItem } from "@mui/material";
 
-import { useAppSelector } from "../../../redux/hooks";
-import { getMemorizedNumItems } from "../../../redux/cartSlice";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     links: {
@@ -43,7 +39,6 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export const Guest = () => {
   const classes = useStyles();
-  const numItems = useAppSelector(getMemorizedNumItems);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -69,13 +64,6 @@ export const Guest = () => {
       onClose={handleMobileMenuClose}
     >
       <MenuItem className={classes.menu}>
-        <Link to="/cart" className={classes.links}>
-          <IconButton>
-            <Badge badgeContent={numItems} color="secondary">
-              <ShoppingCartIcon className={classes.icon} />
-            </Badge>
-          </IconButton>
-        </Link>
         <IconButton>
           <Link to="/user/register" className={classes.links}>
             <SupervisorAccountIcon className={classes.icon} />
@@ -93,13 +81,6 @@ export const Guest = () => {
   return (
     <section>
       <div className={classes.sectionDesktop}>
-        <Link to="/cart" className={classes.links}>
-          <IconButton>
-            <Badge badgeContent={numItems} color="secondary">
-              <ShoppingCartIcon className={classes.icon} />
-            </Badge>
-          </IconButton>
-        </Link>
         <IconButton>
           <Link to="/user/register" className={classes.links}>
             <SupervisorAccountIcon className={classes.icon} />

@@ -1,5 +1,5 @@
 import React from "react";
-import { RouteComponentProps } from "react-router";
+import { RouteComponentProps, useHistory } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
   checkout,
@@ -55,8 +55,9 @@ export const useStyles = makeStyles((theme: Theme) =>
 export const Cart = (props: RouteComponentProps) => {
   const classes = useStyles();
   const dispatch = useAppDispatch();
+  const history = useHistory();
   const cart = useAppSelector((state) => state.cartReducer.items);
-  console.log(cart);
+  // console.log(cart);
   const products = useAppSelector((state) => state.productsReducer.entities);
   const totalPrice = useAppSelector(getTotalPrice);
   const checkoutState = useAppSelector(
@@ -71,6 +72,7 @@ export const Cart = (props: RouteComponentProps) => {
   function onCheckout(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     dispatch(checkout());
+    history.push("/checkout");
   }
 
   return (

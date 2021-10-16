@@ -5,6 +5,7 @@ import { ProductsList } from "../components/ProductList";
 import { Product } from "./product";
 import { User } from "./user/User";
 import { CartRoute } from "./cart";
+import { CheckoutRoute } from "./checkout/checkout";
 export const HomePage: React.FC = (): JSX.Element => (
   <div>
     <Navbar />
@@ -14,6 +15,10 @@ export const HomePage: React.FC = (): JSX.Element => (
         <Route path="/user" render={(props) => <User {...props} />} />
         <Route path="/products" component={Product} />
         <Route path="/cart" render={(props) => <CartRoute {...props} />} />
+        <Route
+          path="/checkout"
+          render={(props) => <CheckoutRoute {...props} />}
+        />
       </Switch>
     </div>
   </div>

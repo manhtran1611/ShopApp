@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useEffect } from "react";
 import { Product } from "../../interface";
 import { Link, useHistory, useLocation } from "react-router-dom";
@@ -6,19 +6,24 @@ import { Link, useHistory, useLocation } from "react-router-dom";
 import { fetchProducts, selectAllProducts } from "../../redux/productsSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { addToCart } from "../../redux/cartSlice";
+import { selectUser } from "../../redux/userSlice";
+
 //  * MATERIAL UI
-import CardContent from "@material-ui/core/CardContent";
-import Typography from "@material-ui/core/Typography";
 import { Button, CardActionArea, CardMedia } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
+import Typography from "@material-ui/core/Typography";
 import Pagination from "@mui/material/Pagination";
+import { Popup } from "./Popup";
+import CircularProgress from "@mui/material/CircularProgress";
+import { Backdrop } from "@mui/material";
 
 const useStyles = makeStyles({
   container: {
     width: "90vw",
-    maxWidth: " calc(100%-1em)",
+    fontSize: "16px",
     display: "flex",
     flexWrap: "wrap",
     justifyContent: "flex-start",
@@ -26,15 +31,17 @@ const useStyles = makeStyles({
     margin: "1em 0 1em 8em",
   },
   card: {
-    width: "10em",
+    width: "15em",
+    height: "25em",
     margin: "1em",
     backgroundColor: "snow",
   },
   media: {
-    height: 140,
+    height: "17em",
   },
   title: {
     fontWeight: "bold",
+    fontSize: "1.5em",
   },
   link: {
     textDecoration: "none",
@@ -64,6 +71,7 @@ export const ProductsList: React.FC = () => {
   const location = useLocation();
   const history = useHistory();
   const products = useAppSelector(selectAllProducts);
+  const user = useAppSelector(selectUser);
 
   function useQuery() {
     return new URLSearchParams(location.search);
@@ -81,6 +89,26 @@ export const ProductsList: React.FC = () => {
     }
   }, [page, dispatch]);
 
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  if (products.length === 0)
+    return (
+      <Backdrop
+        open={open}
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+    );
+
   return (
     <div>
       <section className={classes.container}>
@@ -91,6 +119,7 @@ export const ProductsList: React.FC = () => {
                 <Link to={`/products/${product._id}`} className={classes.link}>
                   <CardMedia
                     className={classes.media}
+                    component="img"
                     image={product.image}
                     title={product.name}
                   />
@@ -116,13 +145,28 @@ export const ProductsList: React.FC = () => {
                 </Link>
               </CardActionArea>
               <CardActions className={classes.buttonWrapper}>
-                <Button
-                  variant="contained"
-                  className={classes.button}
-                  onClick={() => dispatch(addToCart(product._id))}
-                >
-                  Add to Cart
-                </Button>
+                {user.length > 0 ? (
+                  <Button
+                    variant="contained"
+                    fullWidth
+                    className={classes.button}
+                    onClick={() => dispatch(addToCart(product._id))}
+                  >
+                    Add to Cart
+                  </Button>
+                ) : (
+                  <div>
+                    <Button
+                      variant="contained"
+                      fullWidth
+                      className={classes.button}
+                      onClick={handleClickOpen}
+                    >
+                      Add to Cart
+                    </Button>
+                    <Popup open={open} onClose={handleClose} />
+                  </div>
+                )}
               </CardActions>
             </Card>
           );
