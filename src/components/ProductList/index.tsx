@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import { Product } from "../../interface";
 import { Link, useHistory, useLocation } from "react-router-dom";
+import { Loader } from "../Loader";
 //  * Redux
 import { fetchProducts, selectAllProducts } from "../../redux/productsSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
@@ -17,8 +18,6 @@ import CardActions from "@material-ui/core/CardActions";
 import Typography from "@material-ui/core/Typography";
 import Pagination from "@mui/material/Pagination";
 import { Popup } from "./Popup";
-import CircularProgress from "@mui/material/CircularProgress";
-import { Backdrop } from "@mui/material";
 
 const useStyles = makeStyles({
   container: {
@@ -99,15 +98,7 @@ export const ProductsList: React.FC = () => {
     setOpen(false);
   };
 
-  if (products.length === 0)
-    return (
-      <Backdrop
-        open={open}
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-      >
-        <CircularProgress color="inherit" />
-      </Backdrop>
-    );
+  if (products.length === 0) return <Loader />;
 
   return (
     <div>
