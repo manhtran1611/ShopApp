@@ -1,5 +1,12 @@
 import API from "../axios";
-import { Product, Review, InputUser, CartItems, Filter } from "../interface";
+import {
+  Product,
+  Review,
+  InputUser,
+  CartItems,
+  Filter,
+  InputProduct,
+} from "../interface";
 class ProductDataService {
   getAllProduct(page: string) {
     return API.get(`products?page=${page}`);
@@ -12,7 +19,7 @@ class ProductDataService {
       `products?${filter.query}=${filter.value}&page=${filter.page}`
     );
   }
-  addProduct(data: Product) {
+  addProduct(data: InputProduct) {
     return API.post(`/products`, data);
   }
   updateProduct(id: string, data: Product) {

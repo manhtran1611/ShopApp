@@ -9,6 +9,7 @@ import { Theme, makeStyles, createStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { getMemorizedNumItems } from "../../../redux/cartSlice";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -23,6 +24,7 @@ const useStyles = makeStyles((theme: Theme) =>
     username: {
       fontStyle: "bold",
       margin: "0.5em",
+      color: "blue",
     },
     iconWrapper: {
       display: "flex",
@@ -59,6 +61,11 @@ export const User = () => {
   return (
     <div>
       <section className={classes.sectionDesktop}>
+        <Link to="/products/new" className={classes.links}>
+          <IconButton>
+            <AddCircleIcon className={classes.icon} />
+          </IconButton>
+        </Link>
         <Link to="/cart" className={classes.links}>
           <IconButton>
             <Badge badgeContent={numItems} color="secondary">

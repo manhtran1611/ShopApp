@@ -62,8 +62,8 @@ export const loginUser = createAsyncThunk<
     const response = await ProductDataService.loginUser(user);
     const token = response.data.token;
     API.defaults.headers.common = { Authorization: token };
-    window.localStorage.setItem("token", token);
-
+    // window.localStorage.setItem("token", token);
+    console.log(response.data);
     return response.data;
   } catch (err: any) {
     let error: AxiosError<ValidationErrors> = err;

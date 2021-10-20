@@ -10,6 +10,14 @@ export interface Product {
   date: Date;
 }
 
+export interface InputProduct {
+  name: string;
+  description: string;
+  price: number;
+  image: string;
+  quantity: number;
+  user: OutputUser;
+}
 export interface Review {
   _id: string;
   user: {
@@ -26,8 +34,6 @@ export interface InputUser {
 export interface OutputUser {
   _id: string;
   name: string;
-  password: string;
-  date: Date;
 }
 
 export interface CartItems {

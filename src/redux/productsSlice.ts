@@ -4,7 +4,7 @@ import {
   createAsyncThunk,
 } from "@reduxjs/toolkit";
 import ProductDataService from "../services";
-import { Product, Filter } from "../interface";
+import { Product, Filter, InputProduct } from "../interface";
 import { RootState } from "./rootReducer";
 
 interface ProductState {
@@ -49,24 +49,24 @@ export const fetchProductById = createAsyncThunk(
 
 export const addNewProduct = createAsyncThunk(
   "products/addProduct",
-  async (initialProduct: Product) => {
+  async (initialProduct: InputProduct) => {
     const response = await ProductDataService.addProduct(initialProduct);
     console.log(response.data);
     return response.data;
   }
 );
 
-export const updateProduct = createAsyncThunk(
-  "products/updateProduct",
-  async (initialProduct: Product) => {
-    const response = await ProductDataService.updateProduct(
-      initialProduct._id,
-      initialProduct
-    );
-    console.log(response);
-    return response.data;
-  }
-);
+// export const updateProduct = createAsyncThunk(
+//   "products/updateProduct",
+//   async (initialProduct: Product) => {
+//     const response = await ProductDataService.updateProduct(
+//       initialProduct._id,
+//       initialProduct
+//     );
+//     console.log(response);
+//     return response.data;
+//   }
+// );
 
 export const deleteProduct = createAsyncThunk(
   "products/deleteProduct",
@@ -84,11 +84,15 @@ const productsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchProducts.fulfilled, (state, action) => {
+        state.status = "succeeded";
         productsAdapter.removeAll(state);
         productsAdapter.upsertMany(state, action.payload);
+        state.status = "idle";
       })
       .addCase(fetchProducts.rejected, (state, action) => {
+        state.status = "failed";
         state.error = action.error.message;
+        state.status = "idle";
       })
       .addCase(fetchProductById.fulfilled, (state, action) => {
         state.status = "succeeded";
@@ -98,11 +102,14 @@ const productsSlice = createSlice({
         state.status = "failed";
         state.error = action.error.message;
         state.status = "idle";
+      })
+      .addCase(addNewProduct.fulfilled, (state, action) => {
+        state.status = "succeeded";
+      })
+      .addCase(addNewProduct.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
       });
-    // .addCase(addNewProduct.fulfilled, (state, action) => {
-    //   state.status = "succeeded";
-    //   productsAdapter.addOne;
-    // });
   },
 });
 
