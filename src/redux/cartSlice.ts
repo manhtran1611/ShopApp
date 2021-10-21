@@ -17,7 +17,6 @@ const initialState: CartState = {
 export const getMemorizedNumItems = createSelector(
   (state: RootState) => state.cartReducer.items,
   (items) => {
-    console.log("calling get cart");
     let numItems = 0;
     for (let id in items) {
       numItems += items[id];

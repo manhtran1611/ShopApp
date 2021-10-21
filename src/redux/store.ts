@@ -4,7 +4,6 @@ import { loadState, saveState } from "./localStorage";
 import throttle from "lodash/throttle";
 
 const persistedState = loadState();
-console.log(persistedState);
 
 const store = configureStore({
   reducer: rootReducer,
@@ -13,7 +12,6 @@ const store = configureStore({
 store.subscribe(
   throttle(() => {
     saveState({
-      // token: store.getState().userReducer.entities.token,
       cartReducer: store.getState().cartReducer,
     });
   }, 5000)

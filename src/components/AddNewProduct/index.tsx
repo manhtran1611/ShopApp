@@ -60,7 +60,7 @@ export const AddNewProduct = (props: RouteComponentProps) => {
   };
   useEffect(() => {
     if (status === "succeeded") {
-      history.push("/#");
+      history.push("/");
     }
   }, [status, history, dispatch]);
 

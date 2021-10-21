@@ -20,7 +20,6 @@ interface ValidationErrors {
 interface Response {
   status: string;
   user: OutputUser;
-  token: string;
 }
 
 const userAdapter = createEntityAdapter<OutputUser>({
@@ -40,8 +39,8 @@ export const registerUser = createAsyncThunk<
   try {
     const response = await ProductDataService.registerUser(user);
     const token = response.data.token;
-    API.defaults.headers.common = { Authorization: token };
-    window.localStorage.setItem("token", token);
+    API.defaults.headers.common = { authorization: token };
+    // window.localStorage.setItem("token", token);
     return response.data;
   } catch (err: any) {
     let error: AxiosError<ValidationErrors> = err;
@@ -60,10 +59,8 @@ export const loginUser = createAsyncThunk<
 >("user/login", async (user, { rejectWithValue }) => {
   try {
     const response = await ProductDataService.loginUser(user);
-    const token = response.data.token;
-    API.defaults.headers.common = { Authorization: token };
-    // window.localStorage.setItem("token", token);
-    console.log(response.data);
+    API.defaults.headers.common = { authorization: response.data.token };
+    // window.localStorage.setItem("token", response.data.token);
     return response.data;
   } catch (err: any) {
     let error: AxiosError<ValidationErrors> = err;
@@ -77,7 +74,7 @@ export const loginUser = createAsyncThunk<
 
 export const logoutUser = createAsyncThunk("user/logout", async () => {
   const response = await ProductDataService.logoutUser();
-  window.localStorage.clear();
+  console.log(response.data);
   return response.data;
 });
 
@@ -101,6 +98,7 @@ const userSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.status = "succeeded";
         userAdapter.addOne(state, action.payload.user);
+        console.log(state);
       })
       .addCase(loginUser.rejected, (state, action) => {
         if (action.payload) {
@@ -111,8 +109,9 @@ const userSlice = createSlice({
       })
       .addCase(logoutUser.fulfilled, (state, action) => {
         state.status = "succeeded";
-        userAdapter.removeAll(state);
+        API.defaults.headers.common = { authorization: "" };
         state.status = "idle";
+        userAdapter.removeAll(state);
       })
       .addCase(logoutUser.rejected, (state, action) => {
         state.status = "failed";

@@ -57,7 +57,7 @@ export const User = () => {
   const user = useAppSelector(selectUser);
   const username = user[0].name;
   const numItems = useAppSelector(getMemorizedNumItems);
-  console.log(user);
+
   return (
     <div>
       <section className={classes.sectionDesktop}>
