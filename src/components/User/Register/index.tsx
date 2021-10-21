@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    height: "100vh",
+    height: "82vh",
     backgroundSize: "100% auto",
     backgroundRepeat: "repeat-y",
   },

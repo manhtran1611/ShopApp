@@ -1,12 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
+import { Menu, MenuItem } from "@mui/material";
+import MoreIcon from "@material-ui/icons/MoreVert";
 import IconButton from "@material-ui/core/IconButton";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import SupervisorAccountIcon from "@material-ui/icons/SupervisorAccount";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
-import MoreIcon from "@material-ui/icons/MoreVert";
-import { Menu, MenuItem } from "@mui/material";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export const Guest = () => {
   const classes = useStyles();
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
-    React.useState<null | HTMLElement>(null);
+    useState<null | HTMLElement>(null);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setMobileMoreAnchorEl(event.currentTarget);
@@ -64,16 +64,16 @@ export const Guest = () => {
       onClose={handleMobileMenuClose}
     >
       <MenuItem className={classes.menu}>
-        <IconButton>
-          <Link to="/user/register" className={classes.links}>
+        <Link to="/user/register" className={classes.links}>
+          <IconButton>
             <SupervisorAccountIcon className={classes.icon} />
-          </Link>
-        </IconButton>
-        <IconButton>
-          <Link to="/user/login" className={classes.links}>
+          </IconButton>
+        </Link>
+        <Link to="/user/login" className={classes.links}>
+          <IconButton>
             <AccountCircle className={classes.icon} />
-          </Link>
-        </IconButton>
+          </IconButton>
+        </Link>
       </MenuItem>
     </Menu>
   );
@@ -81,16 +81,16 @@ export const Guest = () => {
   return (
     <section>
       <div className={classes.sectionDesktop}>
-        <IconButton>
-          <Link to="/user/register" className={classes.links}>
+        <Link to="/user/register" className={classes.links}>
+          <IconButton>
             <SupervisorAccountIcon className={classes.icon} />
-          </Link>
-        </IconButton>
-        <IconButton edge="end">
-          <Link to="/user/login" className={classes.links}>
+          </IconButton>
+        </Link>
+        <Link to="/user/login" className={classes.links}>
+          <IconButton edge="end">
             <AccountCircle className={classes.icon} />
-          </Link>
-        </IconButton>
+          </IconButton>
+        </Link>
       </div>
       <div className={classes.sectionMobile}>
         <IconButton size="medium" onClick={handleMobileMenuOpen}>

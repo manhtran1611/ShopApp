@@ -105,7 +105,7 @@ const productsSlice = createSlice({
       })
       .addCase(addNewProduct.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.status = "idle";
+        productsAdapter.removeAll(state);
       })
       .addCase(addNewProduct.rejected, (state, action) => {
         state.status = "failed";

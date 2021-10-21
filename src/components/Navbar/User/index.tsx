@@ -1,15 +1,21 @@
-import { Typography } from "@material-ui/core";
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+
+// * REDUX
 import { useAppSelector } from "../../../redux/hooks";
 import { selectUser } from "../../../redux/userSlice";
+import { getMemorizedNumItems } from "../../../redux/cartSlice";
+
+// * MATERIAL UI
 import Badge from "@material-ui/core/Badge";
+import { Menu, MenuItem } from "@mui/material";
+import { Typography } from "@material-ui/core";
+import MoreIcon from "@material-ui/icons/MoreVert";
+import LogoutIcon from "@mui/icons-material/Logout";
+import IconButton from "@material-ui/core/IconButton";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import { Theme, makeStyles, createStyles } from "@material-ui/core/styles";
-import IconButton from "@material-ui/core/IconButton";
-import LogoutIcon from "@mui/icons-material/Logout";
-import { getMemorizedNumItems } from "../../../redux/cartSlice";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -29,10 +35,14 @@ const useStyles = makeStyles((theme: Theme) =>
     iconWrapper: {
       display: "flex",
       alignItems: "center",
-      padding: "0 1em",
     },
     icon: {
       color: "#ffffff",
+    },
+    menu: {
+      background: "linear-gradient(to right, #F37335, #FDC830)",
+      display: "flex",
+      flexDirection: "column",
     },
     sectionDesktop: {
       display: "none",
@@ -58,6 +68,53 @@ export const User = () => {
   const username = user[0].name;
   const numItems = useAppSelector(getMemorizedNumItems);
 
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
+    useState<null | HTMLElement>(null);
+  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+  const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setMobileMoreAnchorEl(event.currentTarget);
+  };
+  const handleMobileMenuClose = () => {
+    setMobileMoreAnchorEl(null);
+  };
+
+  const RenderMobileMenu = (
+    <Menu
+      anchorEl={mobileMoreAnchorEl}
+      anchorOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
+      keepMounted
+      transformOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
+      open={isMobileMenuOpen}
+      onClose={handleMobileMenuClose}
+    >
+      <MenuItem className={classes.menu}>
+        <Link to="/products/new" className={classes.links}>
+          <IconButton>
+            <AddCircleIcon className={classes.icon} />
+          </IconButton>
+        </Link>
+        <Link to="/cart" className={classes.links}>
+          <IconButton>
+            <Badge badgeContent={numItems} color="secondary">
+              <ShoppingCartIcon className={classes.icon} />
+            </Badge>
+          </IconButton>
+        </Link>
+        <Link to="/user/logout" className={classes.links}>
+          <IconButton className={classes.iconWrapper}>
+            <LogoutIcon className={classes.icon} />
+          </IconButton>
+        </Link>
+      </MenuItem>
+    </Menu>
+  );
+
   return (
     <div>
       <section className={classes.sectionDesktop}>
@@ -79,18 +136,17 @@ export const User = () => {
             {username}
           </Typography>
         </Typography>
-        <IconButton aria-label="log out" className={classes.iconWrapper}>
-          <Link to="/user/logout" className={classes.links}>
+        <Link to="/user/logout" className={classes.links}>
+          <IconButton aria-label="log out" className={classes.iconWrapper}>
             <LogoutIcon className={classes.icon} />
-          </Link>
-        </IconButton>
+          </IconButton>
+        </Link>
       </section>
       <section className={classes.sectionMobile}>
-        <IconButton aria-label="log out" className={classes.icon}>
-          <Link to="/user/logout" className={classes.links}>
-            <LogoutIcon />
-          </Link>
+        <IconButton size="medium" onClick={handleMobileMenuOpen}>
+          <MoreIcon />
         </IconButton>
+        {RenderMobileMenu}
       </section>
     </div>
   );

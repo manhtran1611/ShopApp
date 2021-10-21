@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { RouteComponentProps, useHistory } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
 
@@ -51,18 +51,17 @@ export const AddNewProduct = (props: RouteComponentProps) => {
     _id: data[0]._id,
     name: data[0].name,
   };
-  console.log(user);
   const { register, handleSubmit } = useForm<InputProduct>();
   const onSubmit: SubmitHandler<InputProduct> = (product) => {
     product.user = user;
-    console.log(product);
     dispatch(addNewProduct(product));
   };
+
   useEffect(() => {
     if (status === "succeeded") {
-      history.push("/");
+      history.push("/#");
     }
-  }, [status, history, dispatch]);
+  }, [status, history]);
 
   return (
     <Container component="main" maxWidth="xs">
